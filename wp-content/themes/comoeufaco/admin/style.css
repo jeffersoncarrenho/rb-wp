@@ -1,0 +1,109 @@
+.rb-wrap {
+	width: 740px;
+}
+.rb-section {
+	border: 1px solid #ddd;
+	border-bottom: 0;
+	background: #f9f9f9;
+}
+.rb-opts label {
+	font-size: 12px;
+	font-weight: 700;
+	width: 200px;
+	display: block;
+	float: left;
+}
+.rb-input {
+	padding: 30px 10px;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #fff;
+}
+.rb-opts small {
+	display: block;
+	float: right;
+	width: 200px;
+	color: #999;
+}
+.rb-opts input[type="text"], .rb-opts select {
+	width: 280px;
+	font-size: 12px;
+	padding: 4px;
+	color: #333;
+	line-height: 1em;
+	background: #f3f3f3;
+}
+.rb-input input:focus, .rb-input textarea:focus {
+	background: #fff;
+}
+.rb-input textarea {
+	width: 280px;
+	height: 175px;
+	font-size: 12px;
+	padding: 4px;
+	color: #333;
+	line-height: 1.5em;
+	background: #f3f3f3;
+}
+.rb-title h3 {
+	cursor: pointer;
+	font-size: 1em;
+	text-transform: uppercase;
+	margin: 0;
+	font-weight: bold;
+	color: #232323;
+	float: left;
+	width: 75%;
+	padding: 14px 4px;
+}
+.rb-title {
+	cursor: pointer;
+	border-bottom: 1px solid #ddd;
+	background: #eee;
+	padding: 0;
+}
+.rb-title h3 img.inactive {
+	margin: -8px 10px 0 2px;
+	width: 32px;
+	height: 32px;
+	background: url('icone.png') no-repeat 0 0;
+	float: left;
+	-moz-border-radius: 6px;
+	border: 1px solid #ccc;
+}
+.rb-title h3 img.active {
+	margin: -8px 10px 0 2px;
+	width: 32px;
+	height: 32px;
+	background: url('icone.png') no-repeat 0 -32px;
+	float: left;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border: 1px solid #ccc;
+}
+.rb-title h3:hover img {
+	border: 1px solid #999;
+}
+.rb-title span.submit {
+	display: block;
+	float: right;
+	margin: 0;
+	padding: 0;
+	width: 18%;
+	padding: 14px 0;
+}
+.clearfix {
+	clear: both;
+}
+.rb-table th, .rb-table td {
+	border: 1px solid #bbb;
+	padding: 10px;
+	text-align: center;
+}
+.rb-table th, .rb-table td.feature {
+	border-color: #888;
+}
+.inline {
+	display: inline;
+	float: left;
+	margin-right: 20px;
+}

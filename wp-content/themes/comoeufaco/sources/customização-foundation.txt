@@ -1,0 +1,8 @@
+Colunas: 12
+Gutter: 1.25em
+Max-width: 62.5em
+
+Primary color: #034a92
+Secondary color: #047abd
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
