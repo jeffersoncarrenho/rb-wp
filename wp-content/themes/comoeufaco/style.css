@@ -7,6 +7,7 @@ Author:
 Author URI:
 */
 .background{background-color:#363F48;}
+.logoh1{margin:0;}
 #social{padding-top: 1.875em;}
 .ic-rss, .ic-mail, .ic-facebook, .ic-twitter, .ic-youtube{width: 41px; height: 41px;}
 .ic-rss{background: url("img/sprite.png") -10px -10px no-repeat;}

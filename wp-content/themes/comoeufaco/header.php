@@ -5,8 +5,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home CEF</title>
-  <?php wp_head(); global $dir_tema;?>
+  <title><?php echo rb_titulos(); ?></title>
+  <?php wp_head(); global $dir_tema, $nome_blog, $link_blog;?>
 </head>
 <body>
 <header>
@@ -26,15 +26,21 @@
 	<div class="background">
 		<div class="row">
 			<div class="medium large-4 columns">
-				<a href="#"><img src="<?php echo $dir_tema; ?>img/logo.png" alt="" /></a>
+				<a href="<?php echo $link_blog;?>" title="<?php echo $nome_blog; ?>">
+					<?php if(is_home()): ?>
+						<h1 class="logoh1"><img src="<?php echo $dir_tema; ?>img/logo.png" alt="<?php echo $nome_blog; ?>" title="<?php echo $nome_blog; ?>" /></h1>
+					<?php else: ?>
+						<img src="<?php echo $dir_tema; ?>img/logo.png" alt="<?php echo $nome_blog; ?>" title="<?php echo $nome_blog; ?>"/>
+					<?php endif; ?>				
+				</a>
 			</div>
 			<div class="medium-6 large-8 columns">
 				<ul class="medium-block-grid-5 right hide-for-small" id="social">
-					<li><a href=""><img src="img/trans.gif" alt="" class="ic-rss"/></a></li>
-					<li><a href=""><img src="img/trans.gif" alt="" class="ic-mail"/></a></li>
-					<li><a href=""><img src="img/trans.gif" alt="" class="ic-facebook"/></a></li>
-					<li><a href=""><img src="img/trans.gif" alt="" class="ic-twitter"/></a></li>
-					<li><a href=""><img src="img/trans.gif" alt="" class="ic-youtube"/></a></li>
+					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-rss"/></a></li>
+					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-mail"/></a></li>
+					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-facebook"/></a></li>
+					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-twitter"/></a></li>
+					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-youtube"/></a></li>
 				</ul>
 			</div><!--Fim logo + sociais-->
 		</div>
@@ -46,7 +52,9 @@
 				</ul>
 			  	<section class="top-bar-section">
 				    <!-- Right Nav Section -->
-					<ul class="right">
+					<?php echo rb_mostra_menu('nav-topo'); ?>
+					
+					<!--<ul class="right">
 						<li class="active"><a href="#">Home</a></li>
 				      	<li class="has-dropdown"><a href="#">Categoria 1</a>
 				      		<ul class="dropdown">
@@ -57,7 +65,7 @@
 				      	</li>
 				      	<li><a href="#">Categoria 2</a></li>
 				        <li><a href="#">Categoria 3</a></li>
-				    </ul>
+				 </ul>-->
 				</section>
 			</nav>
 		</div><!--menu de navegação-->

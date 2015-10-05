@@ -1,3 +1,4 @@
+<?php global $nome_blog, $link_blog; ?>
 <footer>
 	<div class="row rodape-box">
 		<div class="large-4 columns">
@@ -22,14 +23,10 @@
 	</div><!--rodape 3 blocos-->
 	<div class="row rodape-copyright">
 		<div class="medium-6 large-6 columns">
-			<ul class="inline-list">
-				<li><a href="">Home</a></li>
-				<li><a href="">Sobre</a></li>
-				<li><a href="">Privacidade</a></li>
-			</ul>
+			<?php echo rb_mostra_menu('nav-rodape'); ?>
 		</div>
 		<div class="medium-6 large-6 columns text-right">
-			<p>Copyright 2015 - <a href="">Como eu Faço</a> | Todos os direitos reservados</p>
+			<p>Copyright 2015 - <a href="<?php echo $link_blog; ?>"><?php echo $nome_blog; ?></a> | Todos os direitos reservados</p>
 		</div>
 	</div><!--rodape copyright-->
 	<?php wp_footer(); ?>
