@@ -23,14 +23,47 @@
 .destaque-home{padding-top:1.25em;}
 .destaque-home h2{margin-top:0;}
 .destaque-home p{margin-top:0.625em;}
-.ad-home{padding-bottom: 1.25em; border-bottom: 0.0625em #DDDDDD solid;}
+.ad-home{padding-bottom: 1.25em;padding-top: 1.25em; border-bottom: 0.0625em #DDDDDD solid;}
 .content-sidebar{padding-top:1.25em;}
 .rodape-box{padding-top:0.0625em;border-top: 0.0625em #DDDDDD solid;}
 .rodape-copyright{padding-top:1.25em;margin-bottom: 0.0625em;border-top: 0.0625em #DDDDDD solid; border-bottom: 0.0625em #DDDDDD solid;}
-.paginacao{padding-top:1.25em;}
+.post-list{padding-bottom:1.25em;margin-bottom:1.25em!important;border-bottom:0.0625em #DDDDDD solid;}
+.post-list:last-child{border:none;}
+
+.post-meta p{margin-bottom: 0.625em;}
+.post-content{padding-top:1.25em;}
+.post-content img{margin-bottom:1.25em;}
+.post-content ul, .post-content ol{margin-left:2.5em;}
+.post-content img.left, .post-content img.alignleft{margin-right:0.625em;}
+.post-content img.right, .post-content img.alignright{margin-left:0.625em;}
+.post-content img.center, .post-content img.aligncenter{display:block;margin:0 auto;margin-bottom:0.625em;}
+.box-single{border-top:0.0625em #DDDDDD solid; padding-bottom:1.25em;}
+
+
 .widget-box{margin-bottom:1.25em!important;}
 .widget-box form, .widget-box input{margin-bottom:0;}
 .widget-box p{margin-bottom: 0.625em;}
-.widget-box .top10{margin-bottom: 0.625em!important;}
-.widget-box .top10:last-child{margin-bottom:0!important;}
-.widget-box .top10 h6{margin-left: 0.3125em;margin-top:0;}
+.widget-box .top10, .relacionados .top10{margin-bottom: 0.625em!important;}
+.widget-box .top10:last-child, , .relacionados .top10:last-child{margin-bottom:0!important;}
+.widget-box .top10 h6, .relacionados .top10 h6{margin-left: 0.3125em;margin-top:0;}
+
+
+h1,h2,h3,h4,h5,h6{font-weight::;;}
+h1{font-size: 1.750em;}/* 28px */
+h2{font-size: 1.625em;}/* 26px */
+h3{font-size: 1.500em;}/* 24px */
+h4{font-size: 1.375em;}/* 22px */
+h5{font-size: 1.250em;}/* 20px */
+h6{font-size: 1.125em;}/* 18px */
+
+
+
+
+
+
+
+
+
+
+
+
