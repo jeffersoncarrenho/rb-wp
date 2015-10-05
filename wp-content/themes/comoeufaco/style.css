@@ -1,0 +1,36 @@
+.background{background-color:#363F48;}
+
+#social{padding-top: 1.875em;}
+.ic-rss, .ic-mail, .ic-facebook, .ic-twitter, .ic-youtube{width: 41px; height: 41px;}
+.ic-rss{background: url("img/sprite.png") -10px -10px no-repeat;}
+.ic-mail{background: url("img/sprite.png") -61px -10px no-repeat;}
+.ic-facebook{background: url("img/sprite.png") -112px -10px no-repeat;}
+.ic-twitter{background: url("img/sprite.png") -163px -10px no-repeat;}
+.ic-youtube{background: url("img/sprite.png") -214px -10px no-repeat;}
+.ic-rss:hover{background: url("img/sprite.png") -10px -61px no-repeat;}
+.ic-mail:hover{background: url("img/sprite.png") -61px -61px no-repeat;}
+.ic-facebook:hover{background: url("img/sprite.png") -112px -61px no-repeat;}
+.ic-twitter:hover{background: url("img/sprite.png") -163px -61px no-repeat;}
+.ic-youtube:hover{background: url("img/sprite.png") -214px -61px no-repeat;}
+
+.top-bar,.top-bar-section li:not(.has-form) a:not(.button){background-color:#363F48;}
+.top-bar-section li.active:not(.has-form) a:not(.button), 
+.top-bar-section li.active:not(.has-form) a:not(.button):hover,
+.top-bar-section li:not(.has-form) a:not(.button):hover,
+.top-bar-section .dropdown li:not(.has-form):not(.active):hover > a:not(.button),
+.top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button),.top-bar-section ul li:hover:not(.has-form) > a {background-color:#424a55;}
+
+.destaque-home{padding-top:1.25em;}
+.destaque-home h2{margin-top:0;}
+.destaque-home p{margin-top:0.625em;}
+.ad-home{padding-bottom: 1.25em; border-bottom: 0.0625em #DDDDDD solid;}
+.content-sidebar{padding-top:1.25em;}
+.rodape-box{padding-top:0.0625em;border-top: 0.0625em #DDDDDD solid;}
+.rodape-copyright{padding-top:1.25em;margin-bottom: 0.0625em;border-top: 0.0625em #DDDDDD solid; border-bottom: 0.0625em #DDDDDD solid;}
+.paginacao{padding-top:1.25em;}
+.widget-box{margin-bottom:1.25em!important;}
+.widget-box form, .widget-box input{margin-bottom:0;}
+.widget-box p{margin-bottom: 0.625em;}
+.widget-box .top10{margin-bottom: 0.625em!important;}
+.widget-box .top10:last-child{margin-bottom:0!important;}
+.widget-box .top10 h6{margin-left: 0.3125em;margin-top:0;}
