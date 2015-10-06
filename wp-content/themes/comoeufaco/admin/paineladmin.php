@@ -25,25 +25,36 @@ if (is_admin()) {
 			'std'=> get_bloginfo('rss2_url'),
 		),
 		array(
+			'nome'=>'RSS Via Email',
+			'tipo'=>'text',
+			'desc'=>'Link para incrição via email em seu feed rss',
+			'id'=>$prefix_app.'rssemail',			
+		),
+		array(
+			'nome'=>'Facebook',
+			'tipo'=>'text',
+			'desc'=>'Link para sua página no Facebook',
+			'id'=>$prefix_app.'facebook',
+			'std'=>'https://facebook.com',			
+		),
+		array(
+			'nome'=>'Twitter',
+			'tipo'=>'text',
+			'desc'=>'Link seu perfil no Twitter',
+			'id'=>$prefix_app.'twitter',
+			'std'=>'https://twitter.com',			
+		),
+		array(
+			'nome'=>'Youtube',
+			'tipo'=>'text',
+			'desc'=>'Link seu canal no Youtube',
+			'id'=>$prefix_app.'youtube',
+			'std'=>'https://youtube.com',			
+		),
+		array(
 			'tipo'=>'fechar',									
 		),
-		array(
-			'nome'=>'Redes Sociais2',
-			'tipo'=>'sessao',				
-		),
-		array(
-			'tipo'=>'abrir',									
-		),
-		array(
-			'nome'=>'RSS',
-			'tipo'=>'textarea',
-			'desc'=>'Link para seu feed rss',
-			'id'=>$prefix_app.'rssurl2',
-			'std'=> get_bloginfo('rss2_url'),
-		),
-		array(
-			'tipo'=>'fechar',									
-		),
+		
 	);
 	
 	//gera tela de gerenciamento de configurações dinamicamente
@@ -99,6 +110,30 @@ if (is_admin()) {
 								</div>
 								<?php
 								break;
+								case 'select':
+								?>
+								<div class="rb-input">
+									<label><?php echo $item['nome']; ?></label>
+									<select name="<?php echo $item['id']; ?>" id="">
+										<?php foreach ($item['options'] as $option) {?>
+											<option <?php if (rb_getconfig($item)==$option)echo 'selected="selected"'; ?>><?php echo $option; ?></option>
+										<?php } ?>	
+									</select>
+									<small><?php echo $item['desc'];?></small>
+									<div class="clearfix"></div>
+								</div>
+								<?php
+								break;
+								case 'checkbox':
+								?>
+								<div class="rb-input">
+									<label><?php echo $item['nome']; ?></label>
+									<input type="checkbox" name="<?php echo $item['id'];?>" value="true" <?php if (rb_getconfig($item))echo 'checked="checked"'; ?>/>
+									<small><?php echo $item['desc'];?></small>
+									<div class="clearfix"></div>
+								</div>
+								<?php
+								break;
 						}
 					}
 			?>
@@ -149,11 +184,17 @@ if (is_admin()) {
 		}
 		return NULL;
 	}
-	
-	
 }
 
-
+//pega as configurações do tema no banco de dados
+function rb_getopcao($nome=NULL){
+	if ($nome!=NULL) {
+		global $prefix_app;
+		$output = get_option($prefix_app.$nome);
+		if($output!='') return stripslashes($output);
+	}
+	return FALSE;
+}
 
 
 

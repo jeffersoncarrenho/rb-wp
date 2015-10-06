@@ -34,6 +34,26 @@ function rb_cssejs(){
 }
 add_action('wp_enqueue_scripts', 'rb_cssejs');
 
+//adiciona suporte a thumbnails
+add_theme_support('post-thumbnails');
+
+//limpa do wp_head removendo tags desnecessárias
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'start_post_rel_link');
+remove_action('wp_head', 'index_rel_link');
+remove_action('wp_head', 'adjacent_posts_rel_link');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+
+//remove smart quotes  
+remove_filter('the_title', 'wptexturize');
+remove_filter('the_content', 'wptexturize');
+remove_filter('the_excerpt', 'wptexturize');
+remove_filter('comment_text', 'wptexturize');
+remove_filter('list_cats', 'wptexturize');
+remove_filter('single_post_title', 'wptexturize');
+
 //gera titulos personalizados
 function rb_titulos(){
 	global $nome_blog;
@@ -94,15 +114,49 @@ function rb_limpa_cache_menus(){
 }
 add_action('wp_update_nav_menu', 'rb_limpa_cache_menus');
 
+//inclui biblioteca para resize de imgs
+require_once('aq_resizer.php');
 
+//usa a lib aq_resizer para exibir thumbs personalizadas
+function rb_thumb($width=180, $height=150, $class='miniatura', $echo=TRUE){
+	$titulo = get_the_title();
+	global $dir_tema;
+	if (has_post_thumbnail(get_the_ID())): 
+		$img = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()),  'full');
+		$img = aq_resize($img[0], $width, $height, TRUE);
+	else:
+		$img = $dir_tema.'img/nothumb.jpg';
+	endif;
+	if($echo == TRUE):
+		echo "<img src=\"$img\" class=\"$class\" alt=\"$titulo\" title=\"$titulo\" />";
+	else:
+		return "<img src=\"$img\" class=\"$class\" alt=\"$titulo\" title=\"$titulo\" />";
+	endif; 
+}
 
+//gera um resumo do post
+function rb_resumopost($words=40, $link_text='continue lendo &raquo', $allowed_tags = '', $before='<p>', $after='</p>', $echo=TRUE, $idpost=0){
+	if($idpost > 0):
+		$post = get_post($idpost);
+	else:
+		global $post;
+	endif;
+	if ( $allowed_tags == 'all' ) $allowed_tags = '<a>,<i>,<em>,<b>,<strong>,<ul>,<ol>,<li>,<span>,<blockquote>,<img>';
+	$text = preg_replace('/\[.*\]/', '', strip_tags($post->post_content, $allowed_tags));
 
-
-
-
-
-
-
-
-
-
+	$text = explode(' ', $text);
+	$tot = count($text);
+	if ($tot < $words) $words = $tot;
+	$output = '';
+	for ($i=0; $i<$words; $i++): $output .= $text[$i] . ' '; endfor;
+	$retorno = $before;
+	$retorno .= force_balance_tags(rtrim($output));
+	if ($i < $tot) $retorno .=  '...';
+	if ($link_text != '') $retorno .=  ' <a href="'.get_permalink().'" title="'.get_the_title().'">'.$link_text.'</a>';
+	$retorno .=  $after;
+	if ($echo == TRUE):
+		echo $retorno;
+	else:
+		return $retorno;
+	endif;
+}

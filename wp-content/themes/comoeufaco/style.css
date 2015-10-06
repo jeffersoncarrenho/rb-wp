@@ -31,6 +31,7 @@ Author URI:
 .destaque-home{padding-top:1.25em;}
 .destaque-home h2{margin-top:0;}
 .destaque-home p{margin-top:0.625em;}
+.destaque-home li a{display:inline;}
 .ad-home{padding-bottom: 1.25em;padding-top: 1.25em; border-bottom: 0.0625em #DDDDDD solid;}
 .content-sidebar{padding-top:1.25em;}
 .rodape-box{padding-top:0.0625em;border-top: 0.0625em #DDDDDD solid;}

@@ -36,11 +36,11 @@
 			</div>
 			<div class="medium-6 large-8 columns">
 				<ul class="medium-block-grid-5 right hide-for-small" id="social">
-					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-rss"/></a></li>
-					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-mail"/></a></li>
-					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-facebook"/></a></li>
-					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-twitter"/></a></li>
-					<li><a href=""><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-youtube"/></a></li>
+					<li><a href="<?php echo rb_getopcao('rssurl');?>"><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-rss"/></a></li>
+					<li><a href="<?php echo rb_getopcao('rssemail');?>"><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-mail"/></a></li>
+					<li><a href="<?php echo rb_getopcao('facebook');?>"><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-facebook"/></a></li>
+					<li><a href="<?php echo rb_getopcao('twitter');?>"><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-twitter"/></a></li>
+					<li><a href="<?php echo rb_getopcao('youtube');?>"><img src="<?php echo $dir_tema; ?>img/trans.gif" alt="" class="ic-youtube"/></a></li>
 				</ul>
 			</div><!--Fim logo + sociais-->
 		</div>

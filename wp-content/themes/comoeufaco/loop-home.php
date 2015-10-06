@@ -1,21 +1,28 @@
+<?php 
+	global $dir_tema, $link_blog, $WP_Query;
+	$query_destaque = new WP_Query('showposts=1');
+?>
+
 <section>
+	<?php if($query_destaque->have_posts()):while($query_destaque->have_posts()): $query_destaque->the_post(); ?>
 	<div class="row destaque-home">
 		<div class="medium-4 large-4 columns">
-			<a href="" class="th"><img src="img/thumb1.jpg" alt="" /></a>
+			<a href="<?php the_permalink(); ?>" class="th"><?php rb_thumb(300,250);?></a>
 		</div>
 		<div class="medium-8 large-8 columns">
-			<h2><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur sed quia voluptate placeat assumenda illo perspiciatis perferendis incidunt cum excepturi.</p>
+			<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<?php rb_resumopost(30, ''); ?>
 			<ul class="inline-list show-for-large-up">
-				<li><small>Publicado em: </small><a href="">12/03/2014</a></li>
-				<li><small>Categoria(s)</small><a href="">internet, softwares</a></li>
-				<li><small>Autor</small><a href="">Jonh Doe</a></li>
-				<li><small>Interação</small><a href="">15 comentários</a></li>
+				<li><small>Publicado em: </small><?php the_time('d/m/Y'); ?></li>
+				<li><small>Categoria(s)</small><?php the_category(', '); ?></li>
+				<li><small>Autor</small><?php the_author_posts_link(); ?></li>
+				<li><small>Interação</small><?php comments_popup_link('nenhum comentário', '1 comentário', '% comentários'); ?></li>
 			</ul>
-			<a href="" class="button small secondary radius">Continue Lendo &raquo;</a>
+			<a href="<?php the_permalink(); ?>" class="button small secondary radius">Continue Lendo &raquo;</a>
 			 
 		</div>
 	</div><!--post destaque-->
+	<?php endwhile; endif; ?>
 	<div class="row ad-home">
 		<div class="large-12 columns text-center">
 			<img src="img/ad728x90.gif" alt="" />
