@@ -4,6 +4,8 @@ $ver_foundation = '5.5.2';
 $dir_tema = get_template_directory_uri().'/';
 $nome_blog = get_bloginfo('name');
 $link_blog = get_bloginfo('url');
+//inclui o painel de configurações do site
+require_once (TEMPLATEPATH . '/admin/paineladmin.php');
 
 //registra e carrega os arquivos CSS e JS necessários ao tema
 function rb_cssejs(){
