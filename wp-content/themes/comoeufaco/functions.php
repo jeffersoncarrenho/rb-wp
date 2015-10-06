@@ -160,3 +160,43 @@ function rb_resumopost($words=40, $link_text='continue lendo &raquo', $allowed_t
 		return $retorno;
 	endif;
 }
+
+//paginação de post no padrão foundation
+function rb_paginacao($setas=TRUE, $finais=TRUE, $paginas=2){
+    if (is_singular()) return;
+
+    global $wp_query, $paged;
+    $pagination = '';
+
+    $max_page = $wp_query->max_num_pages;
+    if ($max_page == 1) return;
+    if (empty($paged)) $paged = 1;
+
+    if ($setas) $pagination .= rb_linkpaginacao($paged - 1, 'arrow' . (($paged <= 1) ? ' unavailable' : ''), '&laquo;', 'Página anterior');
+    if ($finais && $paged > $paginas + 1) $pagination .= rb_linkpaginacao(1);
+    if ($finais && $paged > $paginas + 2) $pagination .= rb_linkpaginacao(1, 'unavailable', '&hellip;');
+    for ($i = $paged - $paginas; $i <= $paged + $paginas; $i++):
+        if($i > 0 && $i <= $max_page) $pagination .= rb_linkpaginacao($i, ($i == $paged) ? 'current' : '');
+	endfor;
+    if ($finais && $paged < $max_page - $paginas - 1) $pagination .= rb_linkpaginacao($max_page, 'unavailable', '&hellip;');
+    if ($finais && $paged < $max_page - $paginas) $pagination .= rb_linkpaginacao($max_page);
+
+    if ($setas) $pagination .= rb_linkpaginacao($paged + 1, 'arrow' . (($paged >= $max_page) ? ' unavailable' : ''), '&raquo;', 'Próxima página');
+
+    $pagination = '<ul class="pagination">' . $pagination . '</ul>';
+    $pagination = '<div class="pagination-centered">' . $pagination . '</div>';
+
+    echo $pagination;
+}
+
+function rb_linkpaginacao($pagina, $class='', $conteudo='', $title='')
+{
+    $id = sanitize_title_with_dashes('pagination-page-' . $pagina . ' ' . $class);
+    $href = (strrpos($class, 'unavailable') === false && strrpos($class, 'current') === false) ? get_pagenum_link($pagina) : "#$id";
+
+    $class = empty($class) ? $class : " class=\"$class\"";
+    $conteudo = !empty($conteudo) ? $conteudo : $pagina;
+    $title = !empty($title) ? $title : 'Página ' . $pagina;
+
+    return "<li$class><a id=\"$id\" href=\"$href\" title=\"$title\">$conteudo</a></li>\n";
+}

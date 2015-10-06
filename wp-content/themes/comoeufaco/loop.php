@@ -1,90 +1,52 @@
 <div class="row content-sidebar"><!--conteudo + sidebar-->
 	<div class="large-8 columns">
-		<section>
-			<div class="row post-list">
-				<div class="large-12 columns">
-					<h3><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h3>
-				</div>
-				<div class="small-4 medium-3 large-4 columns">
-					<a href="" class="th"><img src="img/thumb2.jpg" alt="" /></a>
-				</div>
-				<div class="small-8 medium-9 large-8 columns">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates repudiandae delectus saepe aut quis officia quas accusamus corrupti aperiam voluptas similique distinctio optio tempora. Pariatur excepturi omnis odit quisquam sunt.</p>
-					<a href="" class="button tiny secondary">Continue lendo &raquo;</a>
-				</div>
-			</div>
-		</section>
-		<section>
-			<div class="row post-list">
-				<div class="large-12 columns">
-					<h3><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h3>
-				</div>
-				<div class="small-4 medium-3 large-4 columns">
-					<a href="" class="th"><img src="img/thumb3.jpg" alt="" /></a>
-				</div>
-				<div class="small-8 medium-9 large-8 columns">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates repudiandae delectus saepe aut quis officia quas accusamus corrupti aperiam voluptas similique distinctio optio tempora. Pariatur excepturi omnis odit quisquam sunt.</p>
-					<a href="" class="button tiny secondary">Continue lendo &raquo;</a>
-				</div>
-			</div>
-		</section>
-		<section>
-			<div class="row post-list">
-				<div class="large-12 columns">
-					<h3><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h3>
-				</div>
-				<div class="small-4 medium-3 large-4 columns">
-					<a href="" class="th"><img src="img/thumb4.jpg" alt="" /></a>
-				</div>
-				<div class="small-8 medium-9 large-8 columns">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates repudiandae delectus saepe aut quis officia quas accusamus corrupti aperiam voluptas similique distinctio optio tempora. Pariatur excepturi omnis odit quisquam sunt.</p>
-					<a href="" class="button tiny secondary">Continue lendo &raquo;</a>
-				</div>
-			</div>
-		</section>
-		<section>
-			<div class="row post-list">
-				<div class="large-12 columns">
-					<h3><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h3>
-				</div>
-				<div class="small-4 medium-3 large-4 columns">
-					<a href="" class="th"><img src="img/thumb5.jpg" alt="" /></a>
-				</div>
-				<div class="small-8 medium-9 large-8 columns">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates repudiandae delectus saepe aut quis officia quas accusamus corrupti aperiam voluptas similique distinctio optio tempora. Pariatur excepturi omnis odit quisquam sunt.</p>
-					<a href="" class="button tiny secondary">Continue lendo &raquo;</a>
-				</div>
-			</div>
-		</section>
+	<?php if(is_day()): ?>
+		<h1 class="subheader"><small>Posts de:</small><?php the_time('j \d\e F \d\e Y'); ?></h1>
+	<?php elseif(is_month()): ?>
+		<h1 class="subheader"><small>Posts de:</small><?php the_time('F \d\e Y'); ?></h1>
+	<?php elseif(is_year()): ?>
+		<h1 class="subheader"><small>Posts de:</small><?php the_time('Y'); ?></h1>
+	<?php elseif(is_category()): ?>
+		<h1 class="subheader"><small>Posts da Categoria:</small><?php single_cat_title('', true); ?></h1>
+	<?php elseif(is_tag()): ?>
+		<h1 class="subheader"><small>Posts marcados com a tag:</small><?php wp_title('', true, '');?></h1>
+	<?php elseif(is_author()): 
+		global $author;
+		$autor_dados = get_userdata($author);	
+	?>	
+		<h1 class="subheader"><small>Posts do autor:</small><?php echo $autor_dados->display_name; ?></h1>
+	<?php elseif(is_search()): ?>
+		<h1 class="subheader"><small>Resultados da busca por:</small><?php the_search_query(); ?></h1>
+	<?php endif; ?>
+	
 		
-		<section>
-			<div class="row post-list">
-				<div class="large-12 columns">
-					<h3><a href="">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h3>
-				</div>
-				<div class="small-4 medium-3 large-4 columns">
-					<a href="" class="th"><img src="img/thumb1.jpg" alt="" /></a>
-				</div>
-				<div class="small-8 medium-9 large-8 columns">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates repudiandae delectus saepe aut quis officia quas accusamus corrupti aperiam voluptas similique distinctio optio tempora. Pariatur excepturi omnis odit quisquam sunt.</p>
-					<a href="" class="button tiny secondary">Continue lendo &raquo;</a>
-				</div>
+	<?php if(have_posts()): while(have_posts()): the_post();?>
+	<section>
+		<div class="row post-list">
+			<div class="large-12 columns">
+				<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 			</div>
-		</section>
-		
-		<div class="row paginacao">
-			<div class="pagination-centered">
-				<ul class="pagination">
-					<li class="arrow unavailable"><a href="">&laquo;</a></li>
-					<li class="current"><a href="">1</a></li>
-					<li><a href="">2</a></li>
-					<li><a href="">3</a></li>
-					<li><a href="">4</a></li>
-					<li class="unavailable"><a href="">&hellip;</a></li>
-					<li><a href="">12</a></li>
-					<li><a href="">13</a></li>
-				  	<li class="arrow"><a href="">&raquo;</a></li>
-				</ul>
-			</div>			
+			<div class="small-4 medium-3 large-4 columns">
+				<a href="<?php the_permalink(); ?>" class="th"><?php rb_thumb(200,165);?></a>
+			</div>
+			<div class="small-8 medium-9 large-8 columns">
+				<?php rb_resumopost(30, ''); ?>
+				<a href="<?php the_permalink(); ?>" class="button tiny secondary">Continue Lendo &raquo;</a>
+			</div>
 		</div>
-	</div><!--loop de posts ou conteudo-->
+	</section>
+	<div class="row paginacao">
+		<?php rb_paginacao(); ?>			
+	</div>
+	<?php endwhile; else: ?>
+		<section>
+			<div class="row post-list">
+				<div class="large-12 columns">
+					<h3>Nenhum post encontrado</h3>
+					<p>Nenhum post foi encontrado com base nos parâmetros fornecidos, tente usar o menu de navagação 
+					ou fazer uma pesquisa para localizar o conteúdo desejado.</p>
+				</div>			
+			</div>
+		</section>	
+	<?php endif; ?>	
+</div><!--loop de posts ou conteudo-->

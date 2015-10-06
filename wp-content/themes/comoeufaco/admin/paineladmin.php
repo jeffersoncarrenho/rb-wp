@@ -55,6 +55,23 @@ if (is_admin()) {
 			'tipo'=>'fechar',									
 		),
 		
+		array(
+			'nome'=>'Publicidade',
+			'tipo'=>'sessao',				
+		),
+		array(
+			'tipo'=>'abrir',									
+		),
+		array(
+			'nome'=>'Anúncio Home Page',
+			'tipo'=>'textarea',
+			'desc'=>'Anúncio de 728x90 que é exibido na home abaixo do post em destaque',
+			'id'=>$prefix_app.'adhome',			
+		),
+		array(
+			'tipo'=>'fechar',									
+		),
+		
 	);
 	
 	//gera tela de gerenciamento de configurações dinamicamente
