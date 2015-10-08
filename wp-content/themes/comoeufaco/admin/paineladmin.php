@@ -69,6 +69,12 @@ if (is_admin()) {
 			'id'=>$prefix_app.'adhome',			
 		),
 		array(
+			'nome'=>'Anúncio sidebar',
+			'tipo'=>'textarea',
+			'desc'=>'Anúncio de 300x250 (ou responsivo)que será exibido na sidebar do blog',
+			'id'=>$prefix_app.'adsidebar',			
+		),
+		array(
 			'tipo'=>'fechar',									
 		),
 		

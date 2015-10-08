@@ -200,3 +200,172 @@ function rb_linkpaginacao($pagina, $class='', $conteudo='', $title='')
 
     return "<li$class><a id=\"$id\" href=\"$href\" title=\"$title\">$conteudo</a></li>\n";
 }
+
+//registra a sidebar principal do site
+register_sidebar(array(
+	'name'=>'Sidebar Principal',
+	'before_widget'=>'<div class="row widget-box"><div class="large-12 columns">',
+	'after_widget'=>'</div></div>',
+	'before_title'=>'<h5>',
+	'after_title'=>'</h5>',
+));
+
+//cria um widget para inscrição via e-mail na news do Feedburner
+class rb_feedemail extends WP_Widget{
+	function __construct(){
+		$params = array(
+			'name'=>'RSS por Email',
+			'description'=>'mostra um form que permite a inscrição de emails para receber as novidades via Feedburner',
+		);
+		parent::__construct('rb_feedemail','', $params);
+	}
+	
+	public function form($instancia){
+		extract($instancia);
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title') ?>">Título:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title') ?>" name="<?php echo $this->get_field_name('title') ?>" value="<?php if(isset($title)) echo esc_attr($title);?>"/>
+			<span class="description">Informe o título do seu widget.</span>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('idfeed') ?>">ID do Feedburner:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('idfeed') ?>" name="<?php echo $this->get_field_name('idfeed') ?>" value="<?php if(isset($title)) echo esc_attr($idfeed);?>"/>
+			<span class="description">Informe o ID do seu feed no Feedburner.</span>
+		</p>
+		<?php
+	}
+	
+	public function widget($args,$instancia){
+		extract($args);
+		extract($instancia);
+		echo $before_widget;
+		if(isset($title)&& $title != '') echo $before_title.$title.$after_title;
+		?>
+		<p>Receba todas as nossas novidades gratuitamente em seu e-mail</p>
+		<form id="subscribeform" action="http://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('http://feedburner.google.com/fb/a/mailverify', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+			<div class="row collapse">
+				<div class="small-8 medium-9 large-10 columns">
+			    	<input type="text" name="email" placeholder="seuemail@provedor.com">
+			    </div>
+			    <div class="small-4 medium-3 large-2 columns">
+				    <input type="submit" value="OK" class="button prefix" />
+				    <input type="hidden" name="uri" value="<?php echo $idfeed; ?>">
+					<input type="hidden" value="pt_BR" name="loc">
+			    </div>
+			</div>
+		</form>
+		<?php
+		echo $after_widget;
+	}
+
+}
+
+//cria um widget para mostrar adsense
+class rb_adsense extends WP_Widget{
+	function __construct(){
+		$params = array(
+			'name'=>'Anúncios do Adsense',
+			'description'=>'mostra um Anúncio do Adsense previamente configurado',
+		);
+		parent::__construct('rb_adsense','', $params);
+	}
+	
+	public function form($instancia){
+		extract($instancia);
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title'); ?>">Título:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title') ?>" name="<?php echo $this->get_field_name('title'); ?>" value="<?php if(isset($title)) echo esc_attr($title);?>"/>
+			<span class="description">Informe o título do seu widget.</span>
+		</p>
+		<p>			
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('ocultar_single') ?>" name="<?php echo $this->get_field_name('ocultar_single'); ?>" <?php if(isset($ocultar_single)) echo 'checked="checked"';?>/>
+			<label for="<?php echo $this->get_field_id('ocultar_single') ?>">Ocultar nos posts (single.php)</label>			
+		</p>
+		<?php
+	}
+	
+	public function widget($args,$instancia){
+		extract($args);
+		extract($instancia);
+		if (isset($ocultar_single)&& is_single()) return;
+		if(rb_getopcao('adsidebar')=='')return;
+		echo $before_widget;
+		if(isset($title)&& $title != '') echo $before_title.$title.$after_title;
+		echo rb_getopcao('adsidebar');
+		echo $after_widget;
+	}
+}
+
+//cria um widget que mostra os posts mais populares do site
+class rb_popularposts extends WP_Widget{
+	function __construct(){
+		$params = array(
+			'name'=>'Top Populares',
+			'description'=>'mostra os posts mais populares do Blog com base no número de comentários',
+		);
+		parent::__construct('rb_popularposts','', $params);
+	}
+	
+	public function form($instancia){
+		extract($instancia);
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title') ?>">Título:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title') ?>" name="<?php echo $this->get_field_name('title') ?>" value="<?php if(isset($title)) echo esc_attr($title);?>"/>
+			<span class="description">Informe o título do seu widget.</span>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('num_posts') ?>">Quantidade:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('num_posts') ?>" name="<?php echo $this->get_field_name('num_posts') ?>" value="<?php if(isset($num_posts)) echo esc_attr($num_posts);?>"/>
+			<span class="description">Informe quantos posts deseja mostrar.</span>
+		</p>
+		<?php
+	}
+	
+	public function widget($args,$instancia){
+		extract($args);
+		extract($instancia);
+		echo $before_widget;
+		if(isset($title)&& $title != '') echo $before_title.$title.$after_title;
+		if(get_transient('rb_popularposts')===FALSE){
+			global $WP_Query;
+			$populares = new WP_Query("showposts={$num_posts}&orderby=comment_count");
+			$output = '';
+			while ($populares->have_posts()):
+				$populares->the_post();
+				$output .='<div class="row collapse top10">';
+				$output .= '<div class="small-3 medium-2 large-3 columns">';
+				$output .= '<a href="'.get_permalink().'" class="th">'.rb_thumb(70,60, '', FALSE).'</a>';
+				$output .= '</div>';
+				$output .= '<div class="small-9 medium-10 large-9 columns">';
+				$output .= '<h6><a href="'.get_permalink().'">'.get_the_title().'</a></h6>';
+				$output .= '</div></div>';		
+			endwhile;
+			set_transient('rb_popularposts', $output, 60*60*24);
+			echo $output;
+		}else{
+			echo get_transient('rb_popularposts');
+		}
+		echo $after_widget;
+	}
+}
+
+//registra os widgets no painel do WP
+function rb_registrawidget(){
+	register_widget('rb_feedemail');
+	register_widget('rb_adsense');
+	register_widget('rb_popularposts');	
+}
+add_action('widgets_init', 'rb_registrawidget');
+
+
+
+
+
+
+
+
+
+
