@@ -34,7 +34,7 @@ Author URI:
 .destaque-home li a{display:inline;}
 .ad-home{padding-bottom: 1.25em;padding-top: 1.25em; border-bottom: 0.0625em #DDDDDD solid;}
 .content-sidebar{padding-top:1.25em;}
-.rodape-box{padding-top:0.0625em;border-top: 0.0625em #DDDDDD solid;}
+.rodape-box{padding-top:0.0625em;padding-bottom:0.0625em;border-top: 0.0625em #DDDDDD solid;}
 .rodape-copyright{padding-top:1.25em;margin-bottom: 0.0625em;border-top: 0.0625em #DDDDDD solid; border-bottom: 0.0625em #DDDDDD solid;}
 .post-list{padding-bottom:1.25em;margin-bottom:1.25em!important;border-bottom:0.0625em #DDDDDD solid;}
 .post-list:last-child{border:none;}

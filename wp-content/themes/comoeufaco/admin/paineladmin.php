@@ -78,6 +78,56 @@ if (is_admin()) {
 			'tipo'=>'fechar',									
 		),
 		
+		array(
+			'nome'=>'SEO',
+			'tipo'=>'sessao',				
+		),
+		array(
+			'tipo'=>'abrir',									
+		),
+		array(
+			'nome'=>'Títulos Personalizados',
+			'tipo'=>'checkbox',
+			'desc'=>'Marque para gerar títulos amigáveis (não use caso tenha um plugin de SEO)',
+			'id'=>$prefix_app.'seotitulos',			
+		),
+		
+		array(
+			'nome'=>'Tags como Keywords',
+			'tipo'=>'checkbox',
+			'desc'=>'Marque para adicionar as tags dos posts com keywords',
+			'id'=>$prefix_app.'seokeywords',			
+		),
+		
+		array(
+			'nome'=>'Remover stopwords das urls',
+			'tipo'=>'checkbox',
+			'desc'=>'Marque para remover palavras de paradas das URLS dos posts',
+			'id'=>$prefix_app.'seostopwords',			
+		),
+		
+		array(
+			'tipo'=>'fechar',									
+		),
+		
+		array(
+			'nome'=>'Extras',
+			'tipo'=>'sessao',				
+		),
+		array(
+			'tipo'=>'abrir',									
+		),
+		array(
+			'nome'=>'Google Analytics',
+			'tipo'=>'textarea',
+			'desc'=>'Insira o código do Google Analytics para monitorar o seu site',
+			'id'=>$prefix_app.'analytics',			
+		),
+		
+		array(
+			'tipo'=>'fechar',									
+		),
+		
 	);
 	
 	//gera tela de gerenciamento de configurações dinamicamente

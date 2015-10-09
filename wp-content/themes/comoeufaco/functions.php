@@ -56,6 +56,8 @@ remove_filter('single_post_title', 'wptexturize');
 
 //gera titulos personalizados
 function rb_titulos(){
+	if(!rb_getopcao('seotitulos')) return wp_title('', FALSE, 'right'). ' | '. $nome_blog;
+	
 	global $nome_blog;
 	if (is_home()) {
 		return $nome_blog.' | '.get_bloginfo('description');
@@ -64,6 +66,53 @@ function rb_titulos(){
 	}
 	
 }
+//adiciona as tags como keywords para SEO
+function rb_tagtokeyword(){  
+    if(is_single() || is_page()):
+		global $post;  
+        $tags = wp_get_post_tags($post->ID); 
+        $tag_array = NULL; 
+        foreach($tags as $tag):  
+            $tag_array[] = $tag->name;  
+        endforeach;
+		if(sizeof($tag_array)>0):  
+	        $tag_string = implode(', ',$tag_array);  
+	        if($tag_string !== ''):  
+	            echo '<meta name="keywords" content="'.$tag_string.'" />'."\r\n";  
+			endif;
+		endif;  
+	endif;  
+}
+if(rb_getopcao('seokeywords')) add_action('wp_head','rb_tagtokeyword');
+
+//remove stop words do slug dos posts ao salvar
+function rb_removestopwords($data, $postarray){
+	if($data['post_status'] != 'publish'):
+		$data['post_name'] = sanitize_title($data['post_title']);
+		
+		$slug = explode('-', $data['post_name']);
+		$stopwords = array('a', 'agora', 'ainda', 'alguem', 'algum', 'alguma', 'algumas', 'alguns', 'ampla', 'amplas', 'amplo', 'amplos', 'ante', 'antes', 'ao', 'aos', 'apos', 'aquela', 'aquelas', 'aquele', 'aqueles', 'aquilo', 'as', 'ate', 'atraves',
+		'cada', 'coisa', 'coisas', 'com', 'como', 'contra', 'contudo',
+		'da', 'daquele', 'daqueles', 'das', 'de', 'dela', 'delas', 'dele', 'deles', 'depois', 'dessa', 'dessas', 'desse', 'desses', 'desta', 'destas', 'deste', 'deste', 'destes', 'deve', 'devem', 'devendo', 'dever', 'devera', 'deverao', 'deveria', 'deveriam', 'devia', 'deviam', 'disse', 'disso', 'disto', 'dito', 'diz', 'dizem', 'do', 'dos',
+		'e', 'ela', 'elas', 'ele', 'eles', 'em', 'enquanto', 'entre', 'era', 'essa', 'essas', 'esse', 'esses', 'esta', 'estamos', 'estao', 'estas', 'estava', 'estavam', 'estavamos', 'este', 'estes', 'estou', 'eu',
+		'fazendo', 'fazer', 'feita', 'feitas', 'feito', 'feitos', 'foi', 'for', 'foram', 'fosse', 'fossem',
+		'grande', 'grandes', 'ha', 'isso', 'isto', 'ja', 'la', 'lhe', 'lhes', 'lo',
+		'mas', 'mais', 'me', 'mesma', 'mesmas', 'mesmo', 'mesmos', 'meu', 'meus', 'minha', 'minhas', 'muita', 'muitas', 'muito', 'muitos',
+		'na', 'nao', 'nas', 'nem', 'nenhum', 'nessa', 'nessas', 'nesta', 'nestas', 'ninguem', 'no', 'nos', 'nos', 'nossa', 'nossas', 'nosso', 'nossos', 'num', 'numa', 'nunca',
+		'o', 'os', 'ou', 'outra', 'outras', 'outro', 'outros',
+		'para', 'pela', 'pelas', 'pelo', 'pelos', 'pequena', 'pequenas', 'pequeno', 'pequenos', 'per', 'perante', 'pode', 'pude', 'podendo', 'poder', 'poderia', 'poderiam', 'podia', 'podiam', 'pois', 'por', 'porem', 'porque', 'posso', 'pouca', 'poucas', 'pouco', 'poucos', 'primeiro', 'primeiros', 'propria', 'proprias', 'proprio', 'proprios',
+		'quais', 'qual', 'quando', 'quanto', 'quantos', 'que', 'quem',
+		'sao', 'se', 'seja', 'sejam', 'sem', 'sempre', 'sendo', 'sera', 'serao', 'ser', 'seu', 'seus', 'si', 'sido', 'so', 'sob', 'sobre', 'sua', 'suas',
+		'talvez', 'tambem', 'tampouco', 'te', 'tem', 'tendo', 'tenha', 'ter', 'teu', 'teus', 'ti', 'tido', 'tinha', 'tinham', 'toda', 'todas', 'todavia', 'todo', 'todos', 'tu', 'tua', 'tuas', 'tudo',
+		'ultima', 'ultimas', 'ultimo', 'ultimos', 'um', 'uma', 'umas', 'uns', 'vai', 'vendo', 'ver', 'vez', 'vindo', 'vir', 'voce', 'voces', 'vos', 'vou'); 		
+		foreach ($slug as $sl => $word):
+			if(in_array($word, $stopwords)) unset($slug[$sl]);
+		endforeach;		
+		$data['post_name'] = implode('-', $slug);
+	endif;
+	return $data;
+}
+if(rb_getopcao('seostopwords')) add_filter('wp_insert_post_data', 'rb_removestopwords', 100, 2);
 
 //adiciona suporte a menus personalizados
 function rb_menus(){
@@ -210,6 +259,15 @@ register_sidebar(array(
 	'after_title'=>'</h5>',
 ));
 
+//registra a sidebar do rodapé do site
+register_sidebar(array(
+	'name'=>'Rodapé do site',
+	'before_widget'=>'<div class="large-4 columns">',
+	'after_widget'=>'</div>',
+	'before_title'=>'<h5>',
+	'after_title'=>'</h5>',
+));
+
 //cria um widget para inscrição via e-mail na news do Feedburner
 class rb_feedemail extends WP_Widget{
 	function __construct(){
@@ -352,11 +410,48 @@ class rb_popularposts extends WP_Widget{
 	}
 }
 
+//cria um widget com página do Facebook
+class rb_facebook extends WP_Widget{
+	function __construct(){
+		$params = array(
+			'name'=>'Página do Facebook',
+			'description'=>'mostra um like box de sua página do Facebook',
+		);
+		parent::__construct('rb_facebook','', $params);
+	}
+	
+	public function form($instancia){
+		extract($instancia);
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id('title') ?>">Título:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('title') ?>" name="<?php echo $this->get_field_name('title') ?>" value="<?php if(isset($title)) echo esc_attr($title);?>"/>
+			<span class="description">Informe o título do seu widget.</span>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('idfacebook') ?>">ID da sua página:</label>
+			<input type="text" class="widefat" id="<?php echo $this->get_field_id('idfacebook') ?>" name="<?php echo $this->get_field_name('idfacebook') ?>" value="<?php if(isset($idfacebook)) echo esc_attr($idfacebook);?>"/>
+			<span class="description">Informe o ID de sua página no Facebook.</span>
+		</p>
+		<?php
+	}
+	
+	public function widget($args,$instancia){
+		extract($args);
+		extract($instancia);
+		echo $before_widget;
+		if(isset($title)&& $title != '') echo $before_title.$title.$after_title;
+		
+		echo $after_widget;
+	}
+}
+
 //registra os widgets no painel do WP
 function rb_registrawidget(){
 	register_widget('rb_feedemail');
 	register_widget('rb_adsense');
-	register_widget('rb_popularposts');	
+	register_widget('rb_popularposts');
+	register_widget('rb_facebook');	
 }
 add_action('widgets_init', 'rb_registrawidget');
 
