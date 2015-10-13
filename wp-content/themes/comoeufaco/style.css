@@ -65,14 +65,19 @@ h4{font-size: 1.375em;}/* 22px */
 h5{font-size: 1.250em;}/* 20px */
 h6{font-size: 1.125em;}/* 18px */
 
-
-
-
-
-
-
-
-
-
-
-
+/* comentários */
+form textarea{height: 120px;}
+.comment-awaiting-moderation{color: #C60F13;}
+ul.comlist{margin-left:0;margin-top:2em;}
+ul.comlist li{list-style:none;margin-bottom:2em;}
+ul.comlist .comment-author img{float:left;margin:0 1em 0 0;}
+ul.comlist .author-meta{display:inline-block;}
+ul.comlist cite.fn{margin-right:0.0625em;}
+ul.comlist section.comment{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:20px;background:white;}
+ul.comlist section.comment > :first-child{margin-top:0;}
+ul.comlist section.comment > :last-child{margin-bottom:0;}
+ul.comlist section.comment h1,ul.comlist section.comment h2,ul.comlist section.comment h3,ul.comlist section.comment h4,ul.comlist section.comment cite.fn,ul.comlist section.comment h5,ul.comlist section.comment h6,ul.comlist section.comment p{color:#333333;}
+ul.comlist section.comment h1,ul.comlist section.comment h2,ul.comlist section.comment h3,ul.comlist section.comment h4,ul.comlist section.comment cite.fn,ul.comlist section.comment h5,ul.comlist section.comment h6{line-height:1;margin-bottom:0.625em;}
+ul.comlist section.comment h1.subheader,ul.comlist section.comment h2.subheader,ul.comlist section.comment h3.subheader,ul.comlist section.comment h4.subheader,ul.comlist section.comment cite.subheader.fn,ul.comlist section.comment h5.subheader,ul.comlist section.comment h6.subheader{line-height:1.4;}
+ul.comlist a.comment-reply-link{float:right;position:relative;bottom:1em;}
+ul.text-center{margin:0 auto !important;}

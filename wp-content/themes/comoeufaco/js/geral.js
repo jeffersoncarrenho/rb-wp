@@ -4,5 +4,8 @@ jQuery(document).ready(function($){
 	$('ul.dropdown').parent().addClass('has-dropdown');
 	$('.rodape-box ul').addClass('side-nav');
 	$('.post-list').last().css('border', 'none');
-	$(document).foundation();	
+	$('#comment').keypress(function(){
+		$('#spamblock').attr('value', 'cef');
+	});
+	$(document).foundation();
 });

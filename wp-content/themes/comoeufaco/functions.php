@@ -30,7 +30,9 @@ function rb_cssejs(){
 	wp_enqueue_script('modernizr');
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('foundation-js');
-	wp_enqueue_script('geral-js');	
+	wp_enqueue_script('geral-js');
+	if(is_single()) wp_enqueue_script('comment-reply');
+		
 }
 add_action('wp_enqueue_scripts', 'rb_cssejs');
 
@@ -182,6 +184,95 @@ function rb_thumb($width=180, $height=150, $class='miniatura', $echo=TRUE){
 		return "<img src=\"$img\" class=\"$class\" alt=\"$titulo\" title=\"$titulo\" />";
 	endif; 
 }
+
+//mostra botões de redes sociais
+function rb_botoessociais(){
+	$url = get_permalink();
+	$title = get_the_title();
+
+	$button = '<ul class="inline-list">';
+	
+	//twitter
+	$button .= '<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+	$button .= sprintf('<li><a href="https://twitter.com/share" class="twitter-share-button" data-url="%s" data-text="%s" data-via="%s" data-lang="pt-BR" data-count="vertical">Tweet</a></li>', $url, $title, 'comofaco' );
+
+	//facebook
+	$button .= '<div id="fb-root"></div><script type="text/javascript">(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=228619377180035"; fjs.parentNode.insertBefore(js, fjs);} (document, "script", "facebook-jssdk"));</script>';
+	$button .= sprintf('<li><div class="fb-like" data-href="%s" data-send="false" data-layout="box_count" data-show-faces="false" data-share="false" data-font="arial"></div></li>', $url);
+
+	//google plus
+	$button .= '<script type="text/javascript" src="https://apis.google.com/js/plusone.js">{lang: \'pt-BR\'}</script>';
+	$button .= '<li><div><g:plusone size="tall"></g:plusone></div></li>';
+
+	//linkedin
+	$button .= '<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>';
+	$button .= sprintf( '<li><div><script type="IN/Share" data-url="%s" data-counter="top"></script></div></li>', $url );	
+	
+	$button .= '</ul>';
+	
+	echo $button;
+}
+
+//mostrar posts relacionados com base na categoria
+function rb_relacionados($qtde=3){
+	if (!is_single()) return FALSE;
+	$id_post = get_the_ID();
+	$categorias = get_the_terms($id_post, 'category');
+	$cat_busca = array();
+	foreach ($categorias as $cat) {
+		$cat_busca[]= $cat->cat_ID;
+	}
+	global $WP_Query;
+	$relacionados = new WP_Query(array(
+		'posts_per_page' => $qtde,
+		'category__in' => $cat_busca,
+		'post__not_in' => array($id_post),
+		'orderby'=> 'rand',
+ 	));
+	if($relacionados->have_posts()):while($relacionados->have_posts()): $relacionados->the_post();
+		?>
+		<div class="row collapse top10">
+			<div class="small-3 medium-2 large-3 columns">
+				<a href="<?php the_permalink(); ?>" class="th"><?php rb_thumb(70,60);?></a>
+			</div>
+			<div class="small-9 medium-10 large-9 columns">
+				<h6><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h6>
+			</div>
+		</div>
+		<?php 
+	endwhile;else:?>
+		<div class="row collapse top10">
+			<div class="small-12 columns">
+				<h6>Nenhum post Relacionado!</h6>
+			</div>
+		</div>
+	<?php endif;
+	wp_reset_query();	
+} 
+
+//previne a publicação de comentários por spammers robotizados
+function rb_campoformcomentarios(){
+	echo '<input type="hidden" name="antisp" value="abc" id="spamblock" />';	
+}
+add_action('comment_form', 'rb_campoformcomentarios');
+
+function rb_verificaspam(){
+	if (trim($_POST['antisp'])!= 'cef') die('Desculpe mas suspeitamos que seu comentário seja SPAM, volte e tente novamente');
+}
+add_action('pre_comment_on_post', 'rb_verificaspam');
+
+//shortcode para embed do youtube
+function rb_youtubesc( $atts, $content = null ) {
+	extract(shortcode_atts(array(
+		'id' => '',
+	), $atts ) );
+	
+	$resultado = '<div class="flex-video"><iframe src="//www.youtube.com/embed/'.$id.'" allowfullscreen="" frameborder="0"></iframe></div>';
+	return $resultado;
+}
+add_shortcode('youtube', 'rb_youtubesc');
+
+
 
 //gera um resumo do post
 function rb_resumopost($words=40, $link_text='continue lendo &raquo', $allowed_tags = '', $before='<p>', $after='</p>', $echo=TRUE, $idpost=0){
