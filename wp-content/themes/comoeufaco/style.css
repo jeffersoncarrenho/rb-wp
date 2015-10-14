@@ -21,6 +21,13 @@ Author URI:
 .ic-twitter:hover{background: url("img/sprite.png") -163px -61px no-repeat;}
 .ic-youtube:hover{background: url("img/sprite.png") -214px -61px no-repeat;}
 
+.autor-link, .autor-twitter, .autor-facebook, .autor-linkedin,.autor-gplus{height: 25px; width:25px;}
+.autor-link{background: url("img/sprite.png") -10px -115px no-repeat;}
+.autor-twitter{background: url("img/sprite.png") -40px -115px no-repeat;}
+.autor-facebook{background: url("img/sprite.png") -70px -115px no-repeat;}
+.autor-linkedin{background: url("img/sprite.png") -100px -115px no-repeat;}
+.autor-gplus{background: url("img/sprite.png") -130px -115px no-repeat;}
+
 .top-bar,.top-bar-section li:not(.has-form) a:not(.button){background-color:#363F48;}
 .top-bar-section li.active:not(.has-form) a:not(.button), 
 .top-bar-section li.active:not(.has-form) a:not(.button):hover,

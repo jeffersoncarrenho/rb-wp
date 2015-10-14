@@ -75,6 +75,18 @@ if (is_admin()) {
 			'id'=>$prefix_app.'adsidebar',			
 		),
 		array(
+			'nome'=>'Anúncio Topo Post',
+			'tipo'=>'textarea',
+			'desc'=>'Anúncio de 300x250 (ou responsivo)que será exibido no topo de cada post',
+			'id'=>$prefix_app.'adtopopost',			
+		),
+		array(
+			'nome'=>'Anúncio Rodapé Post',
+			'tipo'=>'textarea',
+			'desc'=>'Anúncio de 300x250 (ou responsivo)que será exibido no rodapé de cada post',
+			'id'=>$prefix_app.'adrodapepost',			
+		),
+		array(
 			'tipo'=>'fechar',									
 		),
 		

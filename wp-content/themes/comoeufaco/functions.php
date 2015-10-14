@@ -272,7 +272,48 @@ function rb_youtubesc( $atts, $content = null ) {
 }
 add_shortcode('youtube', 'rb_youtubesc');
 
+//adiciona campos extras ao perfil do usuário
+function rb_camposextrauser($user){?>
+	<h3>Configurações de Publicidade</h3>
+	<table class="form-table">
+		<tr>
+			<th><label for="adtopopost">Anúncio no topo dos posts</label></th>
+			<td>
+				<textarea name="adtopopost" rows="5" class="regular-text" id="adtopopost"><?php echo esc_attr(get_the_author_meta('adtopopost', $user->ID)) ?></textarea><br />
+				<span class="description">Insira o código de um anúncio de 300x250 (ou responsivo) que será exibido no topo de cada post</span>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="adrodapepost">Anúncio no Rodapé dos posts</label></th>
+			<td>
+				<textarea name="adrodapepost" rows="5" class="regular-text" id="adrodapepost"><?php echo esc_attr(get_the_author_meta('adrodapepost', $user->ID))?></textarea><br />
+				<span class="description">Insira o código de um anúncio de 300x250 (ou responsivo) que será exibido no rodapé de cada post</span>
+			</td>
+		</tr>
+	</table>
+<?php
+}
+add_action('show_user_profile', 'rb_camposextrauser');
+add_action('edit_user_profile', 'rb_camposextrauser');
 
+//salva os campos extra no perfil do usuário
+function rb_salvarcamposextrauser($user_id){
+	if (!current_user_can('edit_user', $user_id)) return FALSE;
+	update_user_meta($user_id, 'adtopopost', $_POST['adtopopost']);
+	update_user_meta($user_id, 'adrodapepost', $_POST['adrodapepost']);	
+}
+add_action('personal_options_update', 'rb_salvarcamposextrauser');
+add_action('edit_user_profile_update', 'rb_salvarcamposextrauser');
+
+//adiciona campos extras para links de contatos dos usuários
+function rb_userlink($linkscontato){
+	$linkscontato['twitter'] = 'Twitter';
+	$linkscontato['facebook'] = 'Facebook';
+	$linkscontato['linkedin'] = 'LinkedIn';
+	$linkscontato['googleplus'] = 'Google+';
+	return $linkscontato;	
+}
+add_filter('user_contactmethods', 'rb_userlink', 10,1);
 
 //gera um resumo do post
 function rb_resumopost($words=40, $link_text='continue lendo &raquo', $allowed_tags = '', $before='<p>', $after='</p>', $echo=TRUE, $idpost=0){
@@ -432,6 +473,10 @@ class rb_adsense extends WP_Widget{
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('ocultar_single') ?>" name="<?php echo $this->get_field_name('ocultar_single'); ?>" <?php if(isset($ocultar_single)) echo 'checked="checked"';?>/>
 			<label for="<?php echo $this->get_field_id('ocultar_single') ?>">Ocultar nos posts (single.php)</label>			
 		</p>
+		<p>			
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('ocultar_page') ?>" name="<?php echo $this->get_field_name('ocultar_page'); ?>" <?php if(isset($ocultar_page)) echo 'checked="checked"';?>/>
+			<label for="<?php echo $this->get_field_id('ocultar_page') ?>">Ocultar na páginas (page.php)</label>			
+		</p>
 		<?php
 	}
 	
@@ -439,6 +484,7 @@ class rb_adsense extends WP_Widget{
 		extract($args);
 		extract($instancia);
 		if (isset($ocultar_single)&& is_single()) return;
+		if (isset($ocultar_page)&& is_page()) return;
 		if(rb_getopcao('adsidebar')=='')return;
 		echo $before_widget;
 		if(isset($title)&& $title != '') echo $before_title.$title.$after_title;
