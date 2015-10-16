@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo rb_titulos(); ?></title>
   <?php wp_head(); global $dir_tema, $nome_blog, $link_blog;?>
+  <link rel="alternate" href="<?php echo rb_getopcao('rssurl'); ?>" type="application/rss+xml" title="<?php echo $nome_blog;?> RSS Feed"/>
+  <link rel="alternate" href="<?php echo rb_getopcao('rssurl'); ?>" type="application/atom+xml" title="<?php echo $nome_blog;?> Atom Feed"/>
+  <link rel="pingback" href="<?php echo bloginfo('pingback_url'); ?>" />
+  <link rel="shortcut icon" href="<?php echo $dir_tema;?>/img/favicon.ico" />
 </head>
 <body>
 <header>

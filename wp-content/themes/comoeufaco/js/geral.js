@@ -1,5 +1,6 @@
 jQuery.noConflict();
 jQuery(document).ready(function($){
+	$('a').not('[href*="'+document.domain+'"]').attr('target', '_blank');
 	$('.top-bar-section ul.sub-menu').addClass('dropdown').removeClass('sub-menu');
 	$('ul.dropdown').parent().addClass('has-dropdown');
 	$('.rodape-box ul').addClass('side-nav');
