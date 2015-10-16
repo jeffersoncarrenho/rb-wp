@@ -7,6 +7,27 @@ $link_blog = get_bloginfo('url');
 //inclui o painel de configurações do site
 require_once (TEMPLATEPATH . '/admin/paineladmin.php');
 
+//coloca o site em modo de manutenção
+function rb_manutencao(){
+	if (!current_user_can('publish_posts') || !is_user_logged_in()):
+		global $nome_blog;
+		echo '
+			<!doctype html>
+			<head>
+				<meta charset="UTF-8" />
+				<title>'.$nome_blog.'</title>
+			</head>
+			<body>
+				<div style="text-align:center;margin-top:100px;">'.rb_getopcao('msgmanutencao').'</div>
+			</body>
+			</html>
+		';
+		die();
+	endif;
+}
+
+if (rb_getopcao('modomanutencao')) add_action('get_header', 'rb_manutencao');
+
 //registra e carrega os arquivos CSS e JS necessários ao tema
 function rb_cssejs(){
 	global $ver_foundation, $dir_tema;
@@ -18,20 +39,26 @@ function rb_cssejs(){
 	wp_register_style('normalize', $dir_tema.'css/normalize.css', array(), $ver_foundation, 'all');
 	wp_register_style('foundation-min', $dir_tema.'css/foundation.min.css', array(), $ver_foundation, 'all');
 	wp_register_style('style', $dir_tema.'style.css', array('normalize','foundation-min'), $ver_foundation, 'all');
+	wp_register_style('lightbox-css', $dir_tema.'css/lightbox.css', array(), $ver_foundation, 'all');
+		
 	wp_register_script('modernizr', $dir_tema.'js/vendor/modernizr.js', array(), $ver_foundation, FALSE);
 	wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js', array(), $ver_foundation, TRUE);
 	wp_register_script('foundation-js',$dir_tema.'js/foundation.min.js', array('jquery'), $ver_foundation, TRUE);
 	wp_register_script('geral-js',$dir_tema.'js/geral.js', array('jquery'), $ver_foundation, TRUE);
+	wp_register_script('lightbox-js',$dir_tema.'js/lightbox.min.js', array('jquery'), $ver_foundation, TRUE);
 	
 	//carrega os arquivo
 	wp_enqueue_style('normalize');
 	wp_enqueue_style('foundation-min');
 	wp_enqueue_style('style');
+	if(is_single()) wp_enqueue_style('lightbox-css');
+		
 	wp_enqueue_script('modernizr');
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('foundation-js');
 	wp_enqueue_script('geral-js');
 	if(is_single()) wp_enqueue_script('comment-reply');
+	if(is_single()) wp_enqueue_script('lightbox-js');
 		
 }
 add_action('wp_enqueue_scripts', 'rb_cssejs');
@@ -315,6 +342,17 @@ function rb_userlink($linkscontato){
 }
 add_filter('user_contactmethods', 'rb_userlink', 10,1);
 
+//adiciona o ligthbox automaticamente nas img dos posts
+function rb_addlightbox($content) {
+       global $post;
+       $pattern ="/<a(.*?)href=('|\")(.*?).(bmp|gif|jpeg|jpg|png)('|\")(.*?)>/i";
+       $replacement = '<a$1href=$2$3.$4$5 class="lightbox" title="'.$post->post_title.'"$6>';
+       $content = preg_replace($pattern, $replacement, $content);
+       return $content;
+}
+add_filter('the_content', 'rb_addlightbox');
+
+
 //gera um resumo do post
 function rb_resumopost($words=40, $link_text='continue lendo &raquo', $allowed_tags = '', $before='<p>', $after='</p>', $echo=TRUE, $idpost=0){
 	if($idpost > 0):
@@ -592,12 +630,80 @@ function rb_registrawidget(){
 }
 add_action('widgets_init', 'rb_registrawidget');
 
-
-
-
-
-
-
-
-
-
+//gera um form de contato para posts ou páginas via shortcode
+function rb_formcontatosc( $atts, $content = null ) {
+	extract(shortcode_atts(array(
+		'destinatario' => get_bloginfo('admin_email'),
+	), $atts ) );
+	if (isset($_POST['antisp']) && $_POST['antisp'] == 'cef'):
+		$nome = trim($_POST['nome']);
+		$email = trim($_POST['email']);
+		$assunto = trim($_POST['assunto']);
+		$mensagem = trim(stripslashes($_POST['mensagem']));
+		if($nome == '' || $email == '' || $assunto == '' || $mensagem == ''):
+			$aviso = '<div data-alert class="alert-box warning">Todos os campos são obrigatórios, por favor informe todos os dados solicitados!</div>';
+			$validado = FALSE;
+		elseif(!preg_match(
+'/^[^0-9][a-zA-Z0-9_-]+([.][a-zA-Z0-9_-]+)*[@][a-zA-Z0-9_-]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',
+$email)):
+			$aviso = '<div data-alert class="alert-box warning">Informe um endereço de e-mail válido!</div>';
+			$validado = FALSE;
+		else:
+			$validado = TRUE;
+		endif;
+		if($validado == TRUE):
+			$headers[] = 'From: '.$nome.' <'.$email.'>';
+			$mensagem .= "\n\nEste email foi enviado através do site ".get_bloginfo('name')." em ".date('d/m/Y \a\s H:i');
+			if (wp_mail($destinatario, $assunto, $mensagem, $headers)):
+				$aviso = '<div data-alert class="alert-box success">Sua mensagem foi enviada com sucesso! Assim que possível iremos responder.</div>';
+				$assunto = '';
+				$mensagem = '';
+				unset($_POST);
+			endif;
+		endif;
+	else:
+		(isset($_POST['nome'])) ? $nome = $_POST['nome'] : $nome = '';
+		(isset($_POST['email'])) ? $email = $_POST['email'] : $email = '';
+		(isset($_POST['assunto'])) ? $assunto = $_POST['assunto'] : $assunto = '';
+		(isset($_POST['mensagem'])) ? $mensagem = $_POST['mensagem'] : $mensagem = '';
+		if (isset($_POST['antisp']) && $_POST['antisp'] != 'cef') $aviso = '<div data-alert class="alert-box warning">Sua mensagem não foi enviada por suspeita de spam, tente escrevê-la novamente!</div>';
+	endif;
+	$retorno = '';
+	if(isset($aviso)) $retorno .= $aviso;
+	$retorno .= '
+		<form data-abide method="post" action="">
+			<div class="row">
+				<div class="small-8 columns">
+					<label>Seu nome:<input type="text" required name="nome" value="'.$nome.'" /></label>
+					<small class="error">Campo obrigatório: informe seu nome.</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-8 columns">
+					<label>Seu email:<input type="email" required name="email" value="'.$email.'" /></label>
+					<small class="error">Campo obrigatório: informe um email válido</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-8 columns">
+					<label>Assunto:<input type="text" required name="assunto" value="'.$assunto.'" /></label>
+					<small class="error">Campo obrigatório: informe o assunto</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-12 columns">
+					<label>Mensagem:<textarea name="mensagem" required id="comment">'.$mensagem.'</textarea></label>
+					<small class="error">Campo obrigatório: digite a mensagem</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="small-12 columns">
+					<input type="hidden" value="abc" name="antisp" id="spamblock">
+					<input type="submit" id="btnenviar" value="Enviar Mensagem" class="button small">
+				</div>
+			</div>
+		</form>
+	';
+	return $retorno;
+}
+add_shortcode('formcontato', 'rb_formcontatosc');

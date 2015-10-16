@@ -35,10 +35,12 @@
 			</div>
 		</div>
 	</section>
+	
+	<?php endwhile;?>
 	<div class="row paginacao">
 		<?php rb_paginacao(); ?>			
-	</div>
-	<?php endwhile; else: ?>
+	</div> 
+	<?php else: ?>
 		<section>
 			<div class="row post-list">
 				<div class="large-12 columns">

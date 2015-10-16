@@ -7,5 +7,8 @@ jQuery(document).ready(function($){
 	$('#comment').keypress(function(){
 		$('#spamblock').attr('value', 'cef');
 	});
+	if($('a.lightbox').length > 0){
+		$('a.lightbox').lightBox();	
+	}	
 	$(document).foundation();
 });

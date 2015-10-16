@@ -34,6 +34,7 @@ Author URI:
 .top-bar-section li:not(.has-form) a:not(.button):hover,
 .top-bar-section .dropdown li:not(.has-form):not(.active):hover > a:not(.button),
 .top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button),.top-bar-section ul li:hover:not(.has-form) > a {background-color:#424a55;}
+.sub-menu{display: none!important;}
 
 .destaque-home{padding-top:1.25em;}
 .destaque-home h2{margin-top:0;}

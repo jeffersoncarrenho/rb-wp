@@ -140,6 +140,32 @@ if (is_admin()) {
 			'tipo'=>'fechar',									
 		),
 		
+		array(
+			'nome'=>'Manutenção do site',
+			'tipo'=>'sessao',				
+		),
+		array(
+			'tipo'=>'abrir',									
+		),
+		
+		array(
+			'nome'=>'Habilitar o modo de manutenção',
+			'tipo'=>'checkbox',
+			'desc'=>'Marque para ativar o modo de manutenção (aceita HTML)',
+			'id'=>$prefix_app.'modomanutencao',			
+		),
+		
+		array(
+			'nome'=>'Mensagem de Manutenção',
+			'tipo'=>'textarea',
+			'desc'=>'Mensagem que será exibida aos visitantes quando o site estiver em manutenção',
+			'id'=>$prefix_app.'msgmanutenção',			
+		),
+			
+		array(
+			'tipo'=>'fechar',									
+		),
+		
 	);
 	
 	//gera tela de gerenciamento de configurações dinamicamente

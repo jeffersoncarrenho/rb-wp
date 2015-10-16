@@ -1,4 +1,4 @@
-<?php global $nome_blog, $link_blog; ?>
+<?php global $nome_blog, $link_blog, $dir_tema; ?>
 <footer>
 	<div class="row rodape-box">
 				
@@ -14,6 +14,9 @@
 		</div>
 	</div><!--rodape copyright-->
 	<?php wp_footer(); ?>
+	<script>
+		var root = '<?php echo $dir_tema;?>';
+	</script>
 </footer>
 	<?php 
 		if(!is_user_logged_in()):
